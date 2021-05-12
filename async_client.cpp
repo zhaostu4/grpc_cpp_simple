@@ -25,7 +25,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
-
+#include <strstream>
 
 
 using grpc::Channel;
@@ -96,7 +96,10 @@ public:
 
         // Act upon the status of the actual RPC.
         if (status.ok()) {
-            return reply.svrname();
+            std::ostrstream os;
+            os << reply.tid();
+            os << "," + reply.svrname();
+            return os.str();
         } else {
             return "RPC failed";
         }
@@ -115,8 +118,10 @@ int main(int argc, char** argv) {
     // (use of InsecureChannelCredentials()).
     Client client(grpc::CreateChannel(
             "localhost:33333", grpc::InsecureChannelCredentials()));
-    std::string reply = client.Test3("zhao", 1, 52);  // The actual RPC call!
-    std::cout << "client received: " << reply << std::endl;
+    for(int i=0; i<20; i++){
+        std::string reply = client.Test3("zhao", 1, 52);  // The actual RPC call!
+        std::cout << "client received: " << reply << std::endl;
+    }
 
     return 0;
 }

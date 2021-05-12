@@ -24,6 +24,8 @@ set(CMAKE_CXX_STANDARD 14)
 
 include(./common.cmake)
 
+set(thread_pool_DIR "${CMAKE_SOURCE_DIR}/ThreadPool")
+
 # Proto file
 get_filename_component(proto "./protos/simple.proto" ABSOLUTE)
 get_filename_component(proto_path "${proto}" PATH)
@@ -59,11 +61,14 @@ target_link_libraries(hw_grpc_proto
         ${_GRPC_GRPCPP}
         ${_PROTOBUF_LIBPROTOBUF})
 
+# Thread Pool
+include_directories("${thread_pool_DIR}")
+
 # Targets greeter_[async_](client|server)
 foreach(_target
         # sync_server sync_client
         async_server
-        # async_service2
+        # async_service_threadPool
         async_client
         )
     add_executable(${_target} "${_target}.cpp")
