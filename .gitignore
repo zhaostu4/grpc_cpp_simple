@@ -1,0 +1,6 @@
+# cmake dir
+/cmake-build-debug/
+# protos generated files
+/protosGenerated/
+# clion dir
+/.idea/
