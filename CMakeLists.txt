@@ -61,7 +61,10 @@ target_link_libraries(hw_grpc_proto
 
 # Targets greeter_[async_](client|server)
 foreach(_target
-        sync_server sync_client
+        # sync_server sync_client
+        async_server
+        # async_service2
+        async_client
         )
     add_executable(${_target} "${_target}.cpp")
     target_link_libraries(${_target}
