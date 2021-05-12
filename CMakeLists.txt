@@ -21,22 +21,34 @@ cmake_minimum_required(VERSION 3.19)
 project(rpcTest)
 
 set(CMAKE_CXX_STANDARD 14)
-
+set(FLAG_USE_SIMPLE FALSE)
 include(./common.cmake)
 
 set(utls_DIR "${CMAKE_SOURCE_DIR}/utls")
 
 # Proto file
-get_filename_component(proto "./protos/simple.proto" ABSOLUTE)
-get_filename_component(proto_path "${proto}" PATH)
-
+# get_filename_component(proto "./protos/simple.proto" ABSOLUTE)
 # Generated sources
 set(protos_generated_DIR "${CMAKE_SOURCE_DIR}/protosGenerated")
 
-set(hw_proto_srcs "${protos_generated_DIR}/simple.pb.cc")
-set(hw_proto_hdrs "${protos_generated_DIR}/simple.pb.h")
-set(hw_grpc_srcs "${protos_generated_DIR}/simple.grpc.pb.cc")
-set(hw_grpc_hdrs "${protos_generated_DIR}/simple.grpc.pb.h")
+if(${FLAG_USE_SIMPLE})
+    get_filename_component(proto "./protos/simple.proto" ABSOLUTE)
+    get_filename_component(proto_path "${proto}" PATH)
+
+    set(hw_proto_srcs "${protos_generated_DIR}/simple.pb.cc")
+    set(hw_proto_hdrs "${protos_generated_DIR}/simple.pb.h")
+    set(hw_grpc_srcs "${protos_generated_DIR}/simple.grpc.pb.cc")
+    set(hw_grpc_hdrs "${protos_generated_DIR}/simple.grpc.pb.h")
+else()
+    get_filename_component(proto "./protos/experiment.proto" ABSOLUTE)
+    get_filename_component(proto_path "${proto}" PATH)
+
+    set(hw_proto_srcs "${protos_generated_DIR}/experiment.pb.cc")
+    set(hw_proto_hdrs "${protos_generated_DIR}/experiment.pb.h")
+    set(hw_grpc_srcs "${protos_generated_DIR}/experiment.grpc.pb.cc")
+    set(hw_grpc_hdrs "${protos_generated_DIR}/experiment.grpc.pb.h")
+endif()
+
 add_custom_command(
         OUTPUT "${hw_proto_srcs}" "${hw_proto_hdrs}" "${hw_grpc_srcs}" "${hw_grpc_hdrs}"
         COMMAND ${_PROTOBUF_PROTOC}
@@ -65,8 +77,8 @@ include_directories("${utls_DIR}")
 
 # Targets greeter_[async_](client|server)
 foreach(_target
-        sync_server_zhao
-        sync_client_zhao
+        sync_server_zhao_stream
+        sync_client_zhao_stream
         # async_server async_service_threadPool async_client
         )
     add_executable(${_target} "${_target}.cpp")

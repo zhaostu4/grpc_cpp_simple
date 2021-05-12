@@ -1,35 +1,29 @@
 syntax="proto3";
 
 // 包名是生成代码的使用的namespace，所有代码都在这个下面
-package Simple;
+package Experiment;
 
 // 指定服务的名称，作为生成代码里面的二级namespace
 service Server {
-  // 测试接口一
-  rpc Test1(TestRequest) returns (TestNull ){}
-  // 测试接口二
-  rpc Test2(TestNull ) returns (TestReply) {}
-  // 测试接口三
-  rpc Test3(TestRequest) returns (TestReply) {}
+  rpc Test(Request) returns (Reply) {}
   // 测试接口四 输出流
-  rpc Test4(TestRequest) returns(stream TestReply){}
+  rpc TestOutStream(Request) returns(stream Reply){}
   // 测试接口五 输入流
-  rpc Test5(stream TestRequest) returns(TestReply){}
+  rpc TestInStream(stream Request) returns(Reply){}
   // 测试接口六 双向流
-  rpc Test6(stream TestRequest) returns(stream TestReply){}
+  rpc TestBidirectionalStream(stream Request) returns(stream Reply){}
 }
 
-message TestNull {
-}
 
-message TestRequest {
+message Request {
   string name   = 1; // 客户端名称
   int32  id     = 2; // 客户端IP
   double value  = 3; // 附带一个值
 }
 
-message TestReply {
+message Reply {
   uint64 tid        = 1; // 服务线程ID
   string svrname    = 2; // 服务名称
   double takeuptime = 3; // 请求处理耗时
+  string extend     = 4; // 额外的
 }
