@@ -33,17 +33,12 @@ using grpc::ClientAsyncResponseReader;
 using grpc::ClientContext;
 using grpc::CompletionQueue;
 using grpc::Status;
-using Simple::Server;
-using Simple::TestReply;
-using Simple::TestRequest;
 
 class Client {
 public:
-    explicit Client(std::shared_ptr<Channel> channel)
-            : stub_(Simple::Server::NewStub(channel)) {}
+    explicit Client(const std::shared_ptr<Channel>& channel) : stub_(Simple::Server::NewStub(channel)) {}
 
     // Assembles the client's payload, sends it and presents the response back
-    // t
     std::string Test3(const std::string& name, const int clientId, const double externValue) {
         // Data we are sending to the server.
         Simple::TestRequest request;
@@ -110,14 +105,16 @@ private:
     // server's exposed services.
     std::unique_ptr<Simple::Server::Stub> stub_;
 };
-
+/*
+ *
+ *
+ * */
 int main(int argc, char** argv) {
     // Instantiate the client. It requires a channel, out of which the actual RPCs
     // are created. This channel models a connection to an endpoint (in this case,
     // localhost at port 50051). We indicate that the channel isn't authenticated
     // (use of InsecureChannelCredentials()).
-    Client client(grpc::CreateChannel(
-            "localhost:33333", grpc::InsecureChannelCredentials()));
+    Client client(grpc::CreateChannel("localhost:33333", grpc::InsecureChannelCredentials()));
     for(int i=0; i<20; i++){
         std::string reply = client.Test3("zhao", 1, 52);  // The actual RPC call!
         std::cout << "client received: " << reply << std::endl;

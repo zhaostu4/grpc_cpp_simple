@@ -56,7 +56,13 @@ public:
         return grpc::Status(grpc::StatusCode::OK, std::move(message));
     }
 };
-
+/*
+ * 1. Server Builder
+ * 2. Listening Port
+ * 3. Register Server
+ * 4. Create Server
+ * 5. Wait()
+ * */
 int main()
 {
     // 服务构建器，用于构建同步或者异步服务

@@ -7,12 +7,17 @@
 
 #include <memory>
 #include <iostream>
-
+/*
+ * sync-grpc client
+ * 1. create channel
+ * 2. create stub
+ * 3. request function
+ * 4. check response
+ * */
 int main()
 {
     // 创建一个连接服务器的通道
-    std::shared_ptr<grpc::Channel> channel =
-            grpc::CreateChannel("localhost:33333", grpc::InsecureChannelCredentials());
+    std::shared_ptr<grpc::Channel> channel = grpc::CreateChannel("localhost:33333", grpc::InsecureChannelCredentials());
     // 创建一个stub
     std::unique_ptr<Simple::Server::Stub> stub = Simple::Server::NewStub(channel);
 
