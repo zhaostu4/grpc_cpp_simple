@@ -83,19 +83,17 @@ grpc::Status Test3(grpc::ServerContext*       context,
                    Simple::TestReply*         response)
 {
     printf("%s %d\n",__func__,__LINE__);
-    int tid = get_tid();
-    std::ostrstream os;
-    os << "Client Name = " << request->name() << '\n';
-    os << "Clinet ID   = " << request->id()   << '\n';
-    os << "Clinet Value= " << request->value()<< '\n';
-    os << "Server TID  = " << tid<<'\n';
-    std::string message = os.str();
+    std::string message;
+    message += "Client Name:" + request->name();
+    message += "\tClient ID:" + std::to_string(request->id());
+    message += "\tClient Value:" + std::to_string(request->value());
+    message += "\tServer TID:" + std::to_string(111);
 
     // 休眠0.5秒，以便观察异步执行的效果
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    // std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-    response->set_tid(tid);
-    response->set_svrname(__FILE__);
+    response->set_tid(111);
+    response->set_svrname(message);// __FILE__
     response->set_takeuptime(1.234);
     // grpc状态可以设置message
     return grpc::Status(grpc::StatusCode::OK,std::move(message));

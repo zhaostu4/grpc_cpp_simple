@@ -21,7 +21,7 @@ cmake_minimum_required(VERSION 3.19)
 project(rpcTest)
 
 set(CMAKE_CXX_STANDARD 14)
-set(FLAG_USE_SIMPLE FALSE)
+set(FLAG_USE_SIMPLE TRUE)
 include(./common.cmake)
 
 set(utls_DIR "${CMAKE_SOURCE_DIR}/utls")
@@ -77,9 +77,10 @@ include_directories("${utls_DIR}")
 
 # Targets greeter_[async_](client|server)
 foreach(_target
-        sync_server_zhao_stream
-        sync_client_zhao_stream
+        # sync_server_zhao_stream sync_client_zhao_stream
+        # sync_client sync_server
         # async_server async_service_threadPool async_client
+        async_server_zhao async_client_zhao async_client async_service_threadPool
         )
     add_executable(${_target} "${_target}.cpp")
     target_link_libraries(${_target}

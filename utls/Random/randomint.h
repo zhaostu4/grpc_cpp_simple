@@ -10,6 +10,10 @@ public:
     static int get(){
         return u_(e_);
     }
+    static int get(int start, int end){
+        std::uniform_int_distribution<int> u(start, end);
+        return u(e_);
+    }
 private:
     static std::default_random_engine e_;
     static std::uniform_int_distribution<int> u_;

@@ -102,7 +102,13 @@ grpc::Status Test3(grpc::ServerContext*       context,
     // grpc状态可以设置message
     return grpc::Status(grpc::StatusCode::OK,std::move(message));
 }
-
+/*
+ * 1. 定义上下文信息
+ * 2. Service 重写
+ * 3. 创建 Server
+ * 4. 手动注册请求
+ * 5. 手动处理请求
+ * */
 int main()
 {
     // 服务构建器，用于构建同步或者异步服务
