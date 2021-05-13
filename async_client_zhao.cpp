@@ -84,8 +84,8 @@ public:
 
     void Run(){
         for(int i=0; i<20; i++){
-            SendTest3_v1("zhao", i+10, i);  // The actual RPC call!
-            // SendTest2_v1();
+            // SendTest3_v1("zhao", i+10, i);  // The actual RPC call!
+            SendTest2_v1();
         }
     }
 

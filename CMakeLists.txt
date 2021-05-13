@@ -77,10 +77,10 @@ include_directories("${utls_DIR}")
 
 # Targets greeter_[async_](client|server)
 foreach(_target
-        # sync_server_zhao_stream sync_client_zhao_stream
-        # sync_client sync_server
-        # async_server async_service_threadPool async_client
-        async_server_zhao async_client_zhao async_client async_service_threadPool
+        sync_client sync_server # sync
+        # sync_server_zhao_stream sync_client_zhao_stream     # sync_stream
+        async_server async_service_threadPool async_client  # async
+        async_server_zhao async_client_zhao
         )
     add_executable(${_target} "${_target}.cpp")
     target_link_libraries(${_target}
