@@ -3,6 +3,7 @@
 //
 
 #include "simple.grpc.pb.h"
+#include "ThreadTool/threadtool.h"
 #include <grpcpp/grpcpp.h>
 #include <memory>
 #include <iostream>
@@ -18,13 +19,16 @@ public:
                        Simple::TestNull*          response)
     override
     {
+        auto tid = getTid();
         std::ostrstream os;
-        os << "Client Name = " << request->name() << '\n';
-        os << "Clinet ID   = " << request->id()   << '\n';
-        os << "Clinet Value= " << request->value()<< '\n';
+        os.clear();
+        os << "Client Name = " << request->name() << '\t';
+        os << "Clinet ID   = " << request->id()   << '\t';
+        os << "Clinet Value= " << request->value()<< '\t';
+        os << "Server TID  = " << tid<<'\t';
         std::string message = os.str();
         // grpc状态可以设置message,所以也可以用来返回一些信息
-        return grpc::Status(grpc::StatusCode::OK,message);
+        return grpc::Status::OK;
     }
     // Test2
     grpc::Status Test2(grpc::ServerContext*       context,
@@ -43,17 +47,21 @@ public:
                        Simple::TestReply*         response)
     override
     {
-        std::ostrstream os;
-        os << "Client Name = " << request->name() << '\n';
-        os << "Clinet ID   = " << request->id()   << '\n';
-        os << "Clinet Value= " << request->value()<< '\n';
-        std::string message = os.str();
+
+        // printf("Input response.svrname:%s\n", response->svrname().c_str());
+        std::string message;
+        message += "Client Name:" + request->name();
+        message += "\tClient ID:" + std::to_string(request->id());
+        message += "\tClient Value:" + std::to_string(request->value());
+        message += "\tServer TID:" + std::to_string(getTid());
+        // grpc状态可以设置message,所以也可以用来返回一些信息
 
         response->set_tid(__LINE__);
-        response->set_svrname(__FILE__);
+        response->set_svrname(message);
         response->set_takeuptime(1.234);
+        // printf("Output response.svrname:%s\n", response->svrname().c_str());
         // grpc状态可以设置message
-        return grpc::Status(grpc::StatusCode::OK, std::move(message));
+        return grpc::Status::OK;
     }
 };
 /*

@@ -22,9 +22,12 @@ int main()
     std::unique_ptr<Simple::Server::Stub> stub = Simple::Server::NewStub(channel);
 
     // 上面部分可以复用，下面部分复用的话要自己考虑多线程安全问题
-    {
+    for (int i = 0; i < 40; ++i){
         // 创建一个请求对象，用于打包要发送的请求数据
         Simple::TestRequest request;
+        request.set_name("zhao");
+        request.set_id(1);
+        request.set_value(52);
         // 创建一个响应对象，用于解包响要接收的应数据
         Simple::TestReply   reply;
 
@@ -33,16 +36,19 @@ int main()
         // 发送请求，接收响应
         grpc::Status st = stub->Test3(&context,request,&reply);
         if(st.ok()){
-            // 输出下返回数据
-            std::cout<< "tid = " << reply.tid()
-                     << "\nsvrname = " << reply.svrname()
-                     << "\ntakeuptime = " << reply.takeuptime() << std::endl;
+                        // 输出下返回数据
+            //            std::cout<< "tid = " << reply.tid()
+            //                     << "\nsvrname = " << reply.svrname()
+            //                     << "\ntakeuptime = " << reply.takeuptime() << std::endl;
+            std::cout << reply.svrname() << std::endl;
+            // printf("%s\n", reply.svrname().c_str());
         }
         else {
             // 返回状态非OK
             std::cout<< "StatusCode = "<< st.error_code()
-                     <<"\nMessage: "<< st.error_message() <<std::endl;
+                     <<"\tMessage: "<< st.error_message() <<std::endl;
         }
+        // sleep(2);
 
     }
 
