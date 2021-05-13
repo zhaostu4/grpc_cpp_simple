@@ -27,7 +27,6 @@ include(./common.cmake)
 set(utls_DIR "${CMAKE_SOURCE_DIR}/utls")
 
 # Proto file
-# get_filename_component(proto "./protos/simple.proto" ABSOLUTE)
 # Generated sources
 set(protos_generated_DIR "${CMAKE_SOURCE_DIR}/protosGenerated")
 
